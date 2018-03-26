@@ -129,7 +129,10 @@ public class TableViewController implements Initializable {
         
              
           try{
-              loadCars();
+               
+            loadCars();
+       
+              
               updateComboBoxFromDB();
               
         }
@@ -141,7 +144,12 @@ public class TableViewController implements Initializable {
     public void maxresolutionSliderMoved() throws SQLException{
     String label = String.format("%.0f ", maxresolutionSlider.getValue());
         maxresolutionLabel.setText(label);
-        UpdateSlider();
+        if(makeComboBox.getValue() == null){
+            UpdateSlider();
+        }
+        else{
+            comboBoxWasUpdated();
+        }
         
         
     }
@@ -149,7 +157,13 @@ public class TableViewController implements Initializable {
     public void minresolutionSliderMoved() throws SQLException{
     String label = String.format("%.0f", minresolutionSlider.getValue());
         minresolutionLabel.setText(label);
-        UpdateSlider();
+         if(makeComboBox.getValue() == null){
+            UpdateSlider();
+        }
+        else{
+            comboBoxWasUpdated();
+        }
+        
         
     }
     
@@ -226,7 +240,7 @@ public class TableViewController implements Initializable {
            statement = (Statement) conn.createStatement();
             
          //3 create and execute sql query
-           resultSet = statement.executeQuery("select * from car where make = " + name);
+           resultSet = statement.executeQuery("SELECT * FROM car WHERE year between "+minresolutionSlider.getValue()+ " and " +maxresolutionSlider.getValue()+" AND make = '"+name+"'");
           //store the results in the resultset array
             
              

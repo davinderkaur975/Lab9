@@ -46,7 +46,7 @@
                         <Label fx:id="maxresolutionLabel" prefHeight="21.0" prefWidth="73.0" text="Label" />
                      </children>
                   </FlowPane>
-                  <ComboBox fx:id="makeComboBox" prefHeight="31.0" prefWidth="192.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <ComboBox fx:id="makeComboBox" onAction="#comboBoxWasUpdated" prefHeight="31.0" prefWidth="192.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <Label text="Minimum Year" />
                   <Label text="Maximum Year" GridPane.rowIndex="1" />
                   <Label text="Make" GridPane.rowIndex="2" />
