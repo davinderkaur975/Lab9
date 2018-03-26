@@ -5,6 +5,7 @@
  */
 package lab9;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,6 +15,7 @@ import java.sql.Statement;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
@@ -50,6 +52,12 @@ public class TableViewController implements Initializable {
        
         
  
+    public void doneButtonPushed(ActionEvent event) throws IOException
+    {
+        SceneChanger sc = new SceneChanger();
+        sc.changeScenes(event, "Finish.fxml", "Finish");
+    }
+       
     public void loadCars() throws SQLException
     {
         
@@ -106,7 +114,7 @@ public class TableViewController implements Initializable {
              mileageColumn.setCellValueFactory(new PropertyValueFactory<Car, Integer>("mileage"));
              
              
-             maxresolutionSlider.setMin(2010);
+             maxresolutionSlider.setMin(2006);
              maxresolutionSlider.setMax(2016);
              maxresolutionSlider.setValue(2016); //set the default value
              maxresolutionLabel.setText(Integer.toString((int)maxresolutionSlider.getValue()));
@@ -114,7 +122,7 @@ public class TableViewController implements Initializable {
              
              
              minresolutionSlider.setMin(2006);
-             minresolutionSlider.setMax(2010);
+             minresolutionSlider.setMax(2016);
              minresolutionSlider.setValue(2006); //set the default value
              minresolutionLabel.setText(Integer.toString((int)minresolutionSlider.getValue()));
                                                 
@@ -123,6 +131,7 @@ public class TableViewController implements Initializable {
           try{
               loadCars();
               updateComboBoxFromDB();
+              
         }
         catch(SQLException e){
             System.err.println(e.getMessage());
@@ -196,10 +205,74 @@ public class TableViewController implements Initializable {
         }
     }
     
-     
+     public void comboBoxWasUpdated() throws SQLException
+    {
+        this.carTable.getItems().clear();
+        ObservableList<Car> cars = FXCollections.observableArrayList();
+        String name = makeComboBox.getValue();
+        
+        Connection conn=null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+        
+        try
+        {
+        
+         //1. Connect to the database
+            conn = DriverManager.getConnection("jdbc:mysql://aws.computerstudi.es:3306/" +
+                    "gc200361589", "gc200361589", "RUxpI_An__");
+        
+         //2.  Prepare the query
+           statement = (Statement) conn.createStatement();
+            
+         //3 create and execute sql query
+           resultSet = statement.executeQuery("select * from car where make = " + name);
+          //store the results in the resultset array
+            
+             
+  
+              //4. create contact objects from each record
+            while(resultSet.next())
+            {
+          
+        Car newCar = new Car(resultSet.getString("make"),
+                                                  resultSet.getString("model"),
+                                                  resultSet.getInt("year"),
+                                                  resultSet.getInt("mileage"));
+                
+                 
+                                 
+              cars.add(newCar);
+               
+            }
+            
+            carTable.getItems().addAll(cars);
+          
+        }
+          catch (SQLException e)
+        {
+            System.err.println(e);
+        }
+        finally
+        {
+            if (conn != null)
+                conn.close();
+           if (statement != null)
+               statement.close();
+            if(resultSet  != null){
+               resultSet.close();
+        }
+                  
+        
+    }
+    }
+        
+    
      
       public void updateComboBoxFromDB() throws SQLException 
     {
+       
+        
         Connection conn=null;
         Statement statement = null;
         ResultSet resultSet = null;
@@ -218,9 +291,10 @@ public class TableViewController implements Initializable {
            
          //populate the combobox
          while(resultSet.next()){
+             
           makeComboBox.getItems().add(resultSet.getString("make"));
          }
-           
+          
         }
          catch (SQLException e)
         {

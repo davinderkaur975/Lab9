@@ -5,6 +5,8 @@
  */
 package lab9;
 
+import java.io.File;
+
 /**
  *
  * @author Davinder Kaur
@@ -12,6 +14,7 @@ package lab9;
 public class Car {
     private String make, model;
     private int year, mileage;
+    private File imageFile; 
    
 
     public Car(String make, String model, int year, int mileage) {
@@ -20,6 +23,21 @@ public class Car {
         setYear(year);
         setMileage(mileage);
     }
+
+    public Car(String make, String model, int year, int mileage, File imageFile) {
+         this(make, model, year, mileage);
+        setImageFile(imageFile);
+    }
+
+    public File getImageFile() {
+        return imageFile;
+    }
+
+    public void setImageFile(File imageFile) {
+        this.imageFile = imageFile;
+    }
+    
+    
 
     
 
