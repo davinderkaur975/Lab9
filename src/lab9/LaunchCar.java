@@ -28,7 +28,7 @@ public class LaunchCar extends Application {
         
         Scene scene = new Scene(root);
        
-        stage.setTitle("Create Car");
+        stage.setTitle("Cars Table");
         stage.setScene(scene);
         stage.show();
     }

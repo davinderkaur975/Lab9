@@ -50,14 +50,21 @@ public class TableViewController implements Initializable {
        @FXML private ComboBox<String> makeComboBox;
     
        
-        
+        /**
+         * This method takes the user to the finish page when the user clicks the done button
+         * @param event
+         * @throws IOException 
+         */
  
     public void doneButtonPushed(ActionEvent event) throws IOException
     {
         SceneChanger sc = new SceneChanger();
         sc.changeScenes(event, "Finish.fxml", "Finish");
     }
-       
+       /**
+        * This method loads all the cars from the database
+        * @throws SQLException 
+        */
     public void loadCars() throws SQLException
     {
         
@@ -72,12 +79,12 @@ public class TableViewController implements Initializable {
             conn = DriverManager.getConnection("jdbc:mysql://aws.computerstudi.es:3306/" + "gc200361589", "gc200361589", "RUxpI_An__");
             
             //2. create a statement object
-            //statement = conn.createStatement();
+            
             statement = (Statement) conn.createStatement();
             //3. createthe SQL query
             resultSet = statement.executeQuery("SELECT * FROM car");
             
-            //4. create contact objects from each record
+            //4. create car objects from each record
             while(resultSet.next())
             {
                 Car newCar = new Car(resultSet.getString("make"),
@@ -140,7 +147,10 @@ public class TableViewController implements Initializable {
             System.err.println(e.getMessage());
         }
     }
-    
+    /**
+     * This method will update the max resolution label and should be called
+     * when the slider is dragged
+     */
     public void maxresolutionSliderMoved() throws SQLException{
     String label = String.format("%.0f ", maxresolutionSlider.getValue());
         maxresolutionLabel.setText(label);
@@ -153,6 +163,11 @@ public class TableViewController implements Initializable {
         
         
     }
+    
+    /**
+     * This method will update the min resolution label and should be called
+     * when the slider is dragged
+     */
     
     public void minresolutionSliderMoved() throws SQLException{
     String label = String.format("%.0f", minresolutionSlider.getValue());
@@ -168,7 +183,10 @@ public class TableViewController implements Initializable {
     }
     
     
-    
+    /**
+     * This method update the table when the slider is moved
+     * @throws SQLException 
+     */
     public void UpdateSlider() throws SQLException
     {
         this.carTable.getItems().clear();
@@ -178,15 +196,18 @@ public class TableViewController implements Initializable {
         Statement statement = null;
         ResultSet resultSet = null;
         try{
+            //1 Connect to the database
             conn = DriverManager.getConnection("jdbc:mysql://aws.computerstudi.es:3306/" +
                     "gc200361589", "gc200361589", "RUxpI_An__");
             
+            //2. create a statement object
             statement = (Statement) conn.createStatement();
-                   
+              
+            //3 Create the querry
             resultSet = statement.executeQuery("SELECT * FROM car WHERE year between "+minresolutionSlider.getValue()+ " and " +maxresolutionSlider.getValue());
         
             
-            //4. create contact objects from each record
+            //4. create car objects from each record
             while(resultSet.next())
             {
                 Car newCar = new Car(resultSet.getString("make"),
@@ -219,6 +240,11 @@ public class TableViewController implements Initializable {
         }
     }
     
+    
+    /**
+     * THis method update the table based on the combo box and slider
+     * @throws SQLException 
+     */
      public void comboBoxWasUpdated() throws SQLException
     {
         this.carTable.getItems().clear();
@@ -241,11 +267,11 @@ public class TableViewController implements Initializable {
             
          //3 create and execute sql query
            resultSet = statement.executeQuery("SELECT * FROM car WHERE year between "+minresolutionSlider.getValue()+ " and " +maxresolutionSlider.getValue()+" AND make = '"+name+"'");
-          //store the results in the resultset array
+          
             
              
   
-              //4. create contact objects from each record
+              //4. create car objects from each record
             while(resultSet.next())
             {
           
@@ -281,7 +307,10 @@ public class TableViewController implements Initializable {
     }
     }
         
-    
+    /**
+     * This method called all the make values from the db in the combo box
+     * @throws SQLException 
+     */
      
       public void updateComboBoxFromDB() throws SQLException 
     {

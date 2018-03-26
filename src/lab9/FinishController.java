@@ -31,7 +31,11 @@ public class FinishController implements Initializable {
     @FXML private ImageView imageView;
     private File imageFile;
     
-    
+    /**
+     * This method takes the user back to the table view when the user pree the back to table button
+     * @param event
+     * @throws IOException 
+     */
     public void backToTableButtonPushed(ActionEvent event) throws IOException
     {
         SceneChanger sc = new SceneChanger();
@@ -41,6 +45,7 @@ public class FinishController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        // set the default image 
         try{
             imageFile = new File("./src/images/finish.jpg");
             BufferedImage bufferedImage = ImageIO.read(imageFile);
