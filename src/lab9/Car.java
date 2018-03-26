@@ -14,7 +14,7 @@ import java.io.File;
 public class Car {
     private String make, model;
     private int year, mileage;
-    private File imageFile; 
+     
    
 
     public Car(String make, String model, int year, int mileage) {
@@ -24,18 +24,9 @@ public class Car {
         setMileage(mileage);
     }
 
-    public Car(String make, String model, int year, int mileage, File imageFile) {
-         this(make, model, year, mileage);
-        setImageFile(imageFile);
-    }
+  
 
-    public File getImageFile() {
-        return imageFile;
-    }
 
-    public void setImageFile(File imageFile) {
-        this.imageFile = imageFile;
-    }
     
     
 
